@@ -1,0 +1,36 @@
+#!/bin/bash
+dir=$(dirname $0)
+usage="Usage:\n
+General: micluster-terms <domain-base> <ini> <number>\n
+Example: micluster-terms 10.0.2 231 26
+"
+
+base=$1;shift
+if [ "x$base" = "x" ];then
+   echo "Error: no base provided"
+   echo -e $usage
+   exit 1
+fi
+
+ini=$1;shift
+num=$1;shift
+end=$((ini+$num))
+
+echo "Exploring terminals in the range $base.$ini to $base.$end"
+echo -n "(press enter to continue)";read
+
+termfile="$dir/terms.list"
+
+echo -n > $termfile
+for nt in $(seq $ini $end)
+do
+    terminal="$base.$nt"
+    if ping -c 2 10.0.2.$nt &> /dev/null;then
+	echo "$terminal up"
+	echo $terminal >> $termfile
+    else
+	echo "$terminal down"
+    fi
+done
+
+echo "Done."

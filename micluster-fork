@@ -1,0 +1,23 @@
+#!/bin/bash
+dir=$(dirname $0)
+usage="Usage:\n
+General: micluster-fork \"<command>\"\n
+Example: micluster-fork \"hostname\"
+"
+
+cmd=$@
+if [ "x$cmd" = "x" ];then
+   echo "Error: no se proveyo ningun comando"
+   echo -e $usage
+   exit 1
+fi
+
+echo -e "Excuting in $terminal:\n\t$cmd"
+echo -n "(Press enter to proceed)";read
+
+termfile="$dir/termsauth.list"
+for terminal in $(cat $termfile)
+do
+    echo -e "Excuting in $terminal:\n\t$cmd"
+    ssh usuario@$terminal "$cmd"
+done

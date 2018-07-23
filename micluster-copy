@@ -1,0 +1,26 @@
+#!/bin/bash
+dir=$(dirname $0)
+usage="Usage:\n
+General: micluster-copy <remote_directory> <files>\n
+Example: micluster-copy .screenr .
+"
+
+remote_dir=$1;shift
+if [ "x$remote_dir" = "x" ];then
+   echo "Error: no se proveyo ningun archivo"
+   echo -e $usage
+   exit 1
+fi
+
+files=$@
+echo "Copying: $files"
+echo -n "(Press enter to proceed)";read
+
+termfile="$dir/termsauth.list"
+for terminal in $(cat $termfile)
+do
+    echo "Copying file '$files' to $remote_dir..."
+    for file in $files;do
+	scp $file usuario@$terminal:$remote_dir
+    done
+done

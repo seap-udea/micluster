@@ -1,0 +1,26 @@
+#!/bin/bash
+dir=$(dirname $0)
+usage="Usage:\n
+General: micluster-key <user>\n
+Example: micluster-key usuario
+"
+user=$1;shift
+if [ "x$user" = "x" ];then
+   echo "Error: no user provided"
+   echo -e $usage
+   exit 1
+fi
+
+if [ ! -e $HOME/.ssh/id_rsa.pub ];then
+    echo "Generating key pair..."
+    ssh-keygen -t rsa
+fi
+
+termfile="$dir/termsauth.list"
+echo -n > $termfile
+for terminal in $(cat $dir/terms.list)
+do
+    if ssh-copy-id $user@$terminal;then
+	echo $terminal >> $termfile
+    fi
+done
