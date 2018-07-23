@@ -24,3 +24,5 @@ do
 	echo $terminal >> $termfile
     fi
 done
+
+echo "$user" > $dir/user.list

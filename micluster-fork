@@ -5,6 +5,12 @@ General: micluster-fork \"<command>\"\n
 Example: micluster-fork \"hostname\"
 "
 
+user=$(cat $dir/user.list)
+if [ "x$user" = "x" ];then
+   echo "Error: you have not ran yet micluster-key"
+   exit 1
+fi
+
 cmd=$@
 if [ "x$cmd" = "x" ];then
    echo "Error: no se proveyo ningun comando"
@@ -19,5 +25,5 @@ termfile="$dir/termsauth.list"
 for terminal in $(cat $termfile)
 do
     echo -e "Excuting in $terminal:\n\t$cmd"
-    ssh usuario@$terminal "$cmd"
+    ssh $user@$terminal "$cmd"
 done

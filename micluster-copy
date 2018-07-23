@@ -5,6 +5,12 @@ General: micluster-copy <remote_directory> <files>\n
 Example: micluster-copy .screenr .
 "
 
+user=$(cat $dir/user.list)
+if [ "x$user" = "x" ];then
+   echo "Error: you have not ran yet micluster-key"
+   exit 1
+fi
+
 remote_dir=$1;shift
 if [ "x$remote_dir" = "x" ];then
    echo "Error: no se proveyo ningun archivo"
